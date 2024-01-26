@@ -3,7 +3,7 @@ import axios from 'axios'
 import { GoDownload } from "react-icons/go";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md"
 import { Link } from 'react-router-dom';
-import { downloadAndStoreImage } from '../hooks/Store'
+import  performTransaction  from '../hooks/Store'
 import Loader from './Loader';
 import { toast , ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -55,18 +55,16 @@ function Images() {
   }, [page])
 
 
-  const handleDownload =  (imageUrl) => {
-    try {
-      const databaseName = 'ImageDatabase';
-      const storeName = 'Images';
-      downloadAndStoreImage(imageUrl, databaseName, storeName)
-      toast.success("Image Downloaded..!")
-    } catch (error) {
-      toast.error("Couldn't Download Image")
-      console.log(error);
-    }
-
-  };
+  const handleDownload=async(id,ImageUrl)=>{
+    const res=await fetch(ImageUrl);
+    const blob=await res.blob()
+    const url=URL.createObjectURL(blob)
+    // console.log(url);
+    // const img=document.createElement('img')
+    // img.setAttribute('src',url)
+    // document.body.appendChild(img)
+    performTransaction({id:id,url:ImageUrl})
+  }
 
 
 
@@ -89,7 +87,7 @@ function Images() {
               <div className='card shadow-md  relative ' key={item.id}>
                 <img src={item.urls.small} alt={item.alt_description} className='h-72 w-full object-cover rounded-lg p-3' />
                 <div className="action-btn absolute bottom-[45%] left-[45%] p-1 rounded bg-white">
-                  <GoDownload className='text-3xl '  onClick={() => handleDownload(item.links.download)} />
+                  <GoDownload className='text-3xl '  onClick={() => handleDownload(item.id,item.urls.small)} />
                   <ToastContainer />
                 </div>
               </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FcGallery } from 'react-icons/fc';
 import { MdKeyboardDoubleArrowLeft } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { getAllImagesFromDB } from '../hooks/Store';
+import { getImagesFromDb } from '../hooks/Store';
 import Loader from './Loader';
 
 
@@ -12,11 +12,10 @@ function Download() {
   const [loading, setLoading] = useState()
 
   async function fetchData(setImages) {
-    const databaseName = 'ImageDatabase';
-    const storeName = 'Images';
-    const response = await getAllImagesFromDB(databaseName, storeName);
-    setLoading(false);
-    setImages(response);
+    const res=await getImagesFromDb()
+    setLoading(false)
+    console.log(res);
+    setImages(res);
   }
 
   useEffect(() => {
@@ -40,9 +39,9 @@ function Download() {
           <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
             {images && images.map((item) => {
               return (
-                <div className='d-card shadow-md relative' key={item.key}>
-                  <img src={item.url} alt={item.key} className='h-72 w-full object-cover rounded-lg p-3' />
-                </div>
+                <a href={item.url} target="_blank" className='d-card shadow-md relative' key={item.id}>
+                  <img src={item.url} alt={item.id} className='h-72 w-full object-cover rounded-lg p-3' />
+                </a>
               );
             })}
           </div>
