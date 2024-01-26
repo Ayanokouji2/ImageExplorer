@@ -3,9 +3,9 @@ import axios from 'axios'
 import { GoDownload } from "react-icons/go";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md"
 import { Link } from 'react-router-dom';
-import  performTransaction  from '../hooks/Store'
+import performTransaction from '../hooks/Store'
 import Loader from './Loader';
-import { toast , ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -15,6 +15,7 @@ function Images() {
   const [loading, setLoading] = useState(true)
   const [searchText, setSearchText] = useState("");
 
+  const notify = () => toast.success("Downaloaded successfully!", { autoClose: 500, pauseOnHover: false, draggable: false });
   const handlePrevious = (e) => {
     e.preventDefault();
     if (page !== 1) setPage(page - 1)
@@ -55,15 +56,16 @@ function Images() {
   }, [page])
 
 
-  const handleDownload=async(id,ImageUrl)=>{
-    const res=await fetch(ImageUrl);
-    const blob=await res.blob()
-    const url=URL.createObjectURL(blob)
+  const handleDownload = async (id, ImageUrl) => {
+    const res = await fetch(ImageUrl);
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
     // console.log(url);
     // const img=document.createElement('img')
     // img.setAttribute('src',url)
     // document.body.appendChild(img)
-    performTransaction({id:id,url:ImageUrl})
+    performTransaction({ id: id, url: ImageUrl })
+    notify()
   }
 
 
@@ -71,6 +73,7 @@ function Images() {
   return (
     <>
       {loading ? <Loader /> : <div>
+        <ToastContainer />
         <div className='search-cont flex items-center justify-center py-3 border-solid border-b-2'>
           <input onChange={handleSearchText} type="text" className='px-2 py-3 outline-none bg-slate-300  md:w-[25rem] text-slate-800 font-bold' placeholder='Search Your Imagination...' />
           <button className='bg-[#003049] text-white px-3 py-3 ' onClick={handleClick}>Search Now</button>
@@ -87,8 +90,8 @@ function Images() {
               <div className='card shadow-md  relative ' key={item.id}>
                 <img src={item.urls.small} alt={item.alt_description} className='h-72 w-full object-cover rounded-lg p-3' />
                 <div className="action-btn absolute bottom-[45%] left-[45%] p-1 rounded bg-white">
-                  <GoDownload className='text-3xl '  onClick={() => handleDownload(item.id,item.urls.small)} />
-                  <ToastContainer />
+                  <GoDownload className='text-3xl ' onClick={() => handleDownload(item.id, item.urls.small)} />
+
                 </div>
               </div>
 
