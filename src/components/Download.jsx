@@ -10,19 +10,31 @@ import Loader from './Loader';
 function Download() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState()
+  const [page, setPage] = useState(1)
+  const maxContent = 8
+
 
   async function fetchData() {
-    const res=await getImagesFromDb()
+    const res = await getImagesFromDb()
     setLoading(false)
-    setImages(res);
+    setImages(res.slice((page - 1) * maxContent, page * maxContent));
+
   }
 
   useEffect(() => {
     fetchData();
     setLoading(true);
-  }, []);
+  }, [page]);
 
-  
+  const handlePrev = () => {
+    if (page !== 1) setPage(page - 1)
+  }
+
+  const handleNext = () => {
+    if(page<=images.length/maxContent)setPage(page + 1)
+  }
+
+
   return (
     <>
       {
@@ -31,7 +43,7 @@ function Download() {
             <MdKeyboardDoubleArrowLeft />
             <Link to='/'>Home</Link>
           </div>
-          <div className='flex items-center justify-center gap-2 text-2xl border-b-2 border-slate-300 mx-4 py-2'>
+          <div className='flex items-center justify-center gap-2 text-2xl border-b-2 border-slate-300 mx-4 py-1.5'>
             <FcGallery />
             <div>Your Downloads</div>
           </div>
@@ -44,6 +56,11 @@ function Download() {
                 </a>
               );
             })}
+          </div>
+          <div className="pgn-cont fixed bottom-1 left-[45%] flex items-center">
+            <button className='px-4 py-2 bg-blue-300 text-white rounded-md' onClick={handlePrev}>Prev</button>
+            <div className='w-10 text-center'>{page}</div>
+            <button className='px-4 py-2 bg-blue-300 text-white rounded-md' onClick={handleNext}>Next</button>
           </div>
         </div>
       }
