@@ -12,10 +12,12 @@ function Download() {
   const [loading, setLoading] = useState()
   const [page, setPage] = useState(1)
   const maxContent = 8
+  const [Totalpage,setTotal] = useState();
 
 
   async function fetchData() {
     const res = await getImagesFromDb()
+    setTotal(res.length)
     setLoading(false)
     setImages(res.slice((page - 1) * maxContent, page * maxContent));
 
@@ -31,7 +33,7 @@ function Download() {
   }
 
   const handleNext = () => {
-    if(page<=images.length/maxContent)setPage(page + 1)
+    if(Totalpage && page<=Totalpage/maxContent)setPage(page + 1)
   }
 
 
