@@ -11,15 +11,14 @@ function Download() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState()
 
-  async function fetchData(setImages) {
+  async function fetchData() {
     const res=await getImagesFromDb()
     setLoading(false)
-    console.log(res);
     setImages(res);
   }
 
   useEffect(() => {
-    fetchData(setImages);
+    fetchData();
     setLoading(true);
   }, []);
 
@@ -38,9 +37,10 @@ function Download() {
           </div>
           <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
             {images && images.map((item) => {
+              const imageUrl = URL.createObjectURL(item.url)
               return (
-                <a href={item.url} target="_blank" className='d-card shadow-md relative' key={item.id}>
-                  <img src={item.url} alt={item.id} className='h-72 w-full object-cover rounded-lg p-3' />
+                <a href={imageUrl} target="_blank" className='d-card shadow-md relative' key={item.id}>
+                  <img src={imageUrl} alt={item.id} className='h-72 w-full object-cover rounded-lg p-3' />
                 </a>
               );
             })}

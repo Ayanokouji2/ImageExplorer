@@ -59,12 +59,9 @@ function Images() {
   const handleDownload = async (id, ImageUrl) => {
     const res = await fetch(ImageUrl);
     const blob = await res.blob()
-    const url = URL.createObjectURL(blob)
-    // console.log(url);
-    // const img=document.createElement('img')
-    // img.setAttribute('src',url)
-    // document.body.appendChild(img)
-    performTransaction({ id: id, url: ImageUrl })
+    console.log("Blob ",blob);
+
+    performTransaction({ id: id, url: blob })
     notify()
   }
 
