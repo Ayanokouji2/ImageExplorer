@@ -59,7 +59,7 @@ function Images() {
   const handleDownload = async (id, ImageUrl) => {
     const res = await fetch(ImageUrl);
     const blob = await res.blob()
-    console.log("Blob ",blob);
+    // console.log("Blob ", url);
 
     performTransaction({ id: id, url: blob })
     notify()
@@ -87,7 +87,7 @@ function Images() {
               <div className='card shadow-md  relative ' key={item.id}>
                 <img src={item.urls.small} alt={item.alt_description} className='h-72 w-full object-cover rounded-lg p-3' />
                 <div className="action-btn absolute bottom-[45%] left-[45%] p-1 rounded bg-white">
-                  <GoDownload className='text-3xl ' onClick={() => handleDownload(item.id, item.urls.large)} />
+                  <GoDownload className='text-3xl ' onClick={() => handleDownload(item.id, item.urls.raw)} />
 
                 </div>
               </div>
