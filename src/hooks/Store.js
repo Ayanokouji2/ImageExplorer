@@ -21,7 +21,7 @@ const performTransaction = (obj) => {
         const transaction = db.transaction('ImageStore', 'readwrite');
         const ImageStore = transaction.objectStore('ImageStore');
         const res = ImageStore.add(obj);
-
+        
         transaction.oncomplete = () => {
             console.log("Transaction completed");
         };
@@ -37,6 +37,8 @@ const performTransaction = (obj) => {
         res.onerror = () => {
             console.error("Item was not added successfully", res.error);
         };
+
+        return res.error != null ? {sucess:true}:{error:true};
     }
 };
 
